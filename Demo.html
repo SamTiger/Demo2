@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>带缩略图的图片轮播</title>
+	<style>
+    #main{
+    	position:relative;
+    	margin:0 auto;
+    	width:450px;
+    	height:600px;
+    	border:1px solid #333;
+    }
+    #content{
+    	position:relative;
+    	width:400px;
+    	height:480px;
+    	margin:40px auto 0;
+    }
+    #content a{
+    	position:absolute;
+    	width:50px;
+    	height:50px;
+    	background:#FA6E06;
+    	border:1px solid #333;
+    	top:219px;
+    	text-align: center;
+    	text-decoration: none;
+    	line-height:50px;        
+    	font-size:40px;
+    	font-weight:bold;
+    	border-radius:25px;
+    	filter:alpha(opacity:40);
+    	opacity:0.4;
+        color:#fff;
+    }
+    #content a:hover{
+    	filter:alpha(opacity:90);
+    	opacity:0.9;
+    }
+    #prve{
+    	left:20px;
+    }
+    #next{
+    	right:20px;
+    }
+    #img1{
+    	width:400px;height:480px;
+    }
+    #list{
+    	position:absolute;
+    	width:450px;
+    	height:120px;
+    	top:520px;
+    }
+    #list ul{
+    	position:absolute;
+    	margin:30px auto;
+    	left:110px;
+    }
+    #list li{
+    	float:left;
+    	margin-left:10px;
+    	list-style:none;
+    	width:20px;
+    	height:20px;
+    	border:1px solid #333;   	
+    	border-radius:10px;
+    }
+    .hover{
+    	background:orange;
+    }
+    #SLT{
+        display:none;
+        position:relative;
+        width:100px;
+        height:100px;
+        top:-85px;
+        border:1px solid #333;
+        background:#fff;
+    }
+    /* 外层三角 */
+    #triangle{
+        position:absolute;
+        width:0;
+        height:0;
+        left:40px;
+        bottom:-20px;
+        border-width:10px;
+        border-style:solid;
+        border-color:black transparent transparent transparent;
+    }
+    /* 内层三角 */
+    #triangle div{
+        position:absolute;
+        border-width:9px;
+        border-style:solid;
+        border-color:#fff transparent transparent transparent;
+        bottom:-8px;
+        left:-9px;
+    }
+    #img2{
+        position:absolute;
+        margin-left:5px;
+        margin-top:5px;
+        width:90px;
+        height:90px;
+    }
+	</style>
+</head>
+<body>
+	<div id="main">
+		<div id="content">
+			<a href="javascript:;" id="prve"><</a>
+			<a href="javascript:;" id="next">></a>
+			<img src=""  id="img1" alt="" />
+		</div>
+		<div id="list">
+			<ul id="lis">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+        <div id="SLT">
+        <div id="triangle"><div></div></div>
+        <img src="" alt="" id="img2" />
+        </div>
+        
+	</div> 
+</body>
+<script>
+    window.onload = function(){
+        var oPrve = document.getElementById('prve');
+        var oNext = document.getElementById('next'); 
+        var oLis = document.getElementById('lis');
+        var oImg = document.getElementById('img1');
+        var aLi = oLis.getElementsByTagName('li');
+        var oImg2 =document.getElementById('img2');
+        var oSLT = document.getElementById('SLT');
+
+        var arrImg = ['img/1.png','img/2.png','img/3.png','img/4.png'];
+
+        var num =0;
+
+        var fnTab =function(){
+            oImg.src = arrImg[num];
+            for(var i=0;i<aLi.length;i++){
+                aLi[i].className='';
+            }
+            aLi[num].className ='hover';
+        }
+        fnTab();
+        
+        oNext.onclick = function(){
+            num++;
+            if(num == arrImg.length){
+                num=0;
+            }
+            fnTab();
+        }
+
+        oPrve.onclick = function(){
+            num--;
+            if(num == -1){
+                num=arrImg.length -1;
+            }
+            fnTab();
+        }
+        for(var i=0;i<aLi.length;i++){
+            aLi[i].index = i;
+            aLi[i].onclick = function(){
+               num = this.index;         // 精髓
+               fnTab();
+            }
+        }
+        for(var i=0;i<aLi.length;i++){
+            aLi[i].index = i;
+            aLi[i].onmouseover = function(){
+                oSLT.style.display= 'block';
+                oSLT.style.left= 120+ this.index*32+ 'px';
+                oImg2.src = arrImg[this.index];
+            }
+            aLi[i].onmouseout = function(){
+                 oSLT.style.display= 'none';
+            }
+        }
+    }
+
+</script>
+</html>
